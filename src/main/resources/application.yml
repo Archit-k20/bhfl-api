@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+# You can override these with environment variables in hosting
+app:
+  full-name: ${APP_FULL_NAME:john_doe}
+  dob-ddmmyyyy: ${APP_DOB_DDMMYYYY:17091999}
+  email: ${APP_EMAIL:john@xyz.com}
+  roll-number: ${APP_ROLL_NUMBER:ABCD123}
+
+spring:
+  jackson:
+    default-property-inclusion: non_null

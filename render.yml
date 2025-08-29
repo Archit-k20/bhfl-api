@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: bfhl-api
+    env: docker
+    plan: free
+    autoDeploy: true
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: APP_FULL_NAME
+        value: john_doe
+      - key: APP_DOB_DDMMYYYY
+        value: "17091999"
+      - key: APP_EMAIL
+        value: john@xyz.com
+      - key: APP_ROLL_NUMBER
+        value: ABCD123
