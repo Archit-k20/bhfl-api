@@ -1,13 +1,24 @@
-FROM openjdk:17-jdk-slim
-
-# Set the working directory inside the container
+# Stage 1: Build the application
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy the built jar file from your local machine to the container
-COPY target/bfhl-0.0.1-SNAPSHOT.jar app.jar
+# Copy pom.xml and download dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-# Expose the port your app runs on (default for Spring Boot is 8080)
+# Copy source code and build jar
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Stage 2: Run the application
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+
+# Copy the jar from the build stage
+COPY --from=build /app/target/bfhl-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose the port your app runs on
 EXPOSE 8080
 
-# Run the jar file
+# Run the jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
